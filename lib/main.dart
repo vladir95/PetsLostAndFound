@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
         title: 'Flutter Demo',
         theme: new ThemeData(
-          primarySwatch: Colors.orange,
+          primarySwatch: Colors.green,
           fontFamily: 'Varela',
         ),
         home: Directionality(
@@ -34,9 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final String title;
   Map<String, double> _currentLocation;
   Location _location = new Location();
-  bool _permission = false;
   String error;
-  StreamSubscription<Map<String, double>> _locationSubscription;
 
   _MyHomePageState(this.title);
 
@@ -44,12 +42,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   initPlatformState() async {
     Map<String, double> location;
-    // Platform messages may fail, so we use a try/catch PlatformException.
 
     try {
-      _permission = await _location.hasPermission();
+      await _location.hasPermission();
       location = await _location.getLocation();
-
       error = null;
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
@@ -61,11 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
       location = null;
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    //if (!mounted) return;
 
     setState(() {
       _currentLocation = location;
@@ -97,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: EdgeInsets.only(top: 25.0),
                     child: Text(this.title,
                         style:
-                            TextStyle(fontSize: 25.0, color: Colors.orange)))),
-                            Text(this._currentLocation.toString()),
+                            TextStyle(fontSize: 25.0, color: Colors.green)))),
+            Text(this._currentLocation.toString()),
             Expanded(child: PetList())
           ]),
       floatingActionButton: FloatingActionButton(
